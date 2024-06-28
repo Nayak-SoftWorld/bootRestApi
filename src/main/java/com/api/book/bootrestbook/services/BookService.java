@@ -11,7 +11,7 @@ import com.api.book.bootrestbook.entities.Book;
 @Service
 public class BookService {
 
-    private static ArrayList<Book> list = new ArrayList<>();
+    private static List<Book> list = new ArrayList<>();
 
     static {
         list.add(new Book(2, "Book2", "xyz2"));
@@ -43,9 +43,10 @@ public class BookService {
     // delete book by bookId
     public void deleteBook(int bId) {
 
-        list.stream().filter(book -> book.getId() != bId).collect(Collectors.toList());
+        list = list.stream().filter(book -> book.getId() != bId).collect(Collectors.toList());
 
         // ========== Or =========== //
+
         // list = list.stream().filter(book -> {
         // if (book.getId() != bId) {
         // return true;
@@ -55,4 +56,16 @@ public class BookService {
         // }).collect(Collectors.toList());
 
     }
+
+    // update book by id
+    public void updateBook(Book book, int bookId) {
+        list.stream().map(b -> {
+            if (b.getId() == bookId) {
+                b.setTitle(book.getTitle());
+                b.setAuthor(book.getAuthor());
+            }
+            return b;
+        }).collect(Collectors.toList());
+    }
+
 }
