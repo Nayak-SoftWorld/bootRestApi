@@ -1,16 +1,24 @@
 package com.api.book.bootrestbook.helper;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class FileUploadHepler {
-    public final String Upload_Dir = "C:\\Users\\Charry\\Desktop\\bootAPI\\bootrestbook\\src\\main\\resources\\static\\images";
+    // public final String Upload_Dir =
+    // "C:\\Users\\Charry\\Desktop\\bootAPI\\bootrestbook\\src\\main\\resources\\static\\images";
+    public final String Upload_Dir = new ClassPathResource("static\\images").getFile().getAbsolutePath();
+
+    public FileUploadHepler() throws IOException {
+
+    }
 
     public boolean uploadFile(MultipartFile fileData) {
         boolean f = false;
@@ -30,7 +38,9 @@ public class FileUploadHepler {
             // fos.flush();
             // fos.close();
 
-            Files.copy(fileData.getInputStream(),Paths.get(Upload_Dir + File.separator + fileData.getOriginalFilename()),StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(fileData.getInputStream(),
+                    Paths.get(Upload_Dir + File.separator + fileData.getOriginalFilename()),
+                    StandardCopyOption.REPLACE_EXISTING);
 
             f = true;
 
